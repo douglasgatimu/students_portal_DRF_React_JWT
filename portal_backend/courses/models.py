@@ -29,7 +29,9 @@ class Course(models.Model):
     
     level = models.CharField(max_length=20)
     banner = models.ImageField(upload_to='banners/', null=True)
-    
+    # students = models.ManyToManyField(
+    #     User, related_name='courses_joined', blank=True
+    # )    
     created_at = models.DateTimeField(default=now)
     updated_at = models.DateTimeField(default=now)
 
