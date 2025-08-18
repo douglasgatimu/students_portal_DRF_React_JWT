@@ -18,6 +18,10 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from courses import views
+from accounts.views import UserViewSet
+
+
+
 
 
 
@@ -27,6 +31,7 @@ from courses import views
 router = routers.DefaultRouter()
 router.register('courses', views.CourseViewSet)
 router.register('modules', views.ModuleViewSet)
+router.register(r'users', UserViewSet, basename='user')
 # router.register('courses', views.CourseListView)
 
 
