@@ -1,32 +1,21 @@
 import { useState } from "react";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../context/DRFAuthContext";
 import { useNavigate } from "react-router-dom";
 import SignInForm from "../../components/auth/SignInForm";
 import { Link } from "react-router-dom";
 import Spinner from "../../components/common/Spinner";
 
+
 function SignInPage() {
   const [signinError, setSigninError] = useState("");
-  const [loading, setLoading] = useState("");
+  // const [loading, setLoading] = useState("");
 
-  const { session, signInUser } = UserAuth();
-  const navigate = useNavigate();
+  const { loading, loginUser } = UserAuth();
+  
 
-  const handleSignIn = async (email, password) => {
-    setLoading(true);
-    try {
-      const result = await signInUser(email, password);
-      if (result.success) {
-        navigate("/dashboard");
-      } else {
-        setSigninError(result.error || "Authentication error!");
-      }
-    } catch (err) {
-      setSigninError("Login failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleSignIn = ({username, password}) => {
+  loginUser(username, password)
+};
 
   return (
     <div className="split-container animated-container">
