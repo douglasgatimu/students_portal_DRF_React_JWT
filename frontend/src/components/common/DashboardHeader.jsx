@@ -53,8 +53,11 @@ const DashboardHeader = () => {
                     Lessons
                   </Link>
                 </li>
-                                <li>
-                  <Link to="/dashboard/announcements" className="hover:underline">
+                <li>
+                  <Link
+                    to="/dashboard/announcements"
+                    className="hover:underline"
+                  >
                     Announcements
                   </Link>
                 </li>

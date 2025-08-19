@@ -10,7 +10,9 @@ export default function SplitScreen() {
           Welcome To <span className="brand-name">Nawiri Students Portal</span>
         </h1>
         <p>
-          Nawiri avails necessary academic and career information in realtime to increase productivity. </p>
+          Nawiri avails necessary academic and career information in realtime to
+          increase productivity.{" "}
+        </p>
         <div className="button-group">
           {/* <button className="primary-button">Student</button> */}
           <Link to="/signin" className="primary-button">

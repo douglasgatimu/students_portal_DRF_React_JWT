@@ -38,24 +38,31 @@ const ProfilePage = () => {
               {fullName.charAt(0)}
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-[#640146]">{fullName}</h2>
+              <h2 className="text-xl font-semibold text-[#640146]">
+                {fullName}
+              </h2>
               <p className="text-gray-600">{user?.email}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 className="text-lg font-medium mb-2 text-[#640146]">Personal Information</h3>
+              <h3 className="text-lg font-medium mb-2 text-[#640146]">
+                Personal Information
+              </h3>
               <div className="space-y-2 text-gray-700">
                 <p>
                   <span className="font-medium">Role:</span> Student
                 </p>
                 <p>
-                  <span className="font-medium">Member Since:</span> {memberSince}
+                  <span className="font-medium">Member Since:</span>{" "}
+                  {memberSince}
                 </p>
               </div>
             </div>
             <div>
-              <h3 className="text-lg font-medium mb-2 text-[#640146]">Account Security</h3>
+              <h3 className="text-lg font-medium mb-2 text-[#640146]">
+                Account Security
+              </h3>
               <button
                 onClick={handleChangePasswordClick}
                 className="bg-[#640146] text-white px-4 py-2 rounded-md hover:bg-[#4d0035] transition"

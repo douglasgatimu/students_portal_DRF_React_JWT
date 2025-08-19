@@ -11,7 +11,6 @@ const AnnouncementsList = () => {
       try {
         const announcementsData = await getAnnouncements();
         setAnnouncements(announcementsData);
-        
       } catch (error) {
         console.error("Error fetching announcements:", error);
       } finally {

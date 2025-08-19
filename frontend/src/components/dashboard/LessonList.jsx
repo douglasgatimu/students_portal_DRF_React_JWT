@@ -9,7 +9,6 @@ const LessonList = ({ courseId }) => {
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-
         const mockLessons = [
           {
             id: 1,
