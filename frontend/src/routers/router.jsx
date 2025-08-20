@@ -9,7 +9,6 @@ import SplitScreen from "../pages/marketing/SplitScreen";
 import ContactPage from "../pages/marketing/ContactPage";
 import About from "../pages/marketing/About";
 import HomePage from "../pages/dashboard/DashboardOverview";
-import AnnouncementsPage from "../pages/dashboard/AnnouncementsPage";
 import DashboardHome from "../pages/dashboard/DashboardHome";
 import CoursesPage from "../pages/dashboard/CoursesPage";
 import LessonsPage from "../pages/dashboard/LessonsPage";
@@ -58,10 +57,7 @@ export const router = createBrowserRouter([
                 path: "profile",
                 element: <ProfilePage />,
               },
-              {
-                path: "announcements",
-                element: <AnnouncementsPage />,
-              },
+
             ],
           },
         ],
