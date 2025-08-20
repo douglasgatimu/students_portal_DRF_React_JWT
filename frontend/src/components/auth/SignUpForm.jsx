@@ -3,7 +3,7 @@ import { useState } from "react";
 function SignUpForm({ onSubmit }) {
   const [userData, setUserData] = useState({
     name: "",
-    email: "",
+    username: "",
     password: "",
     confirmPassword: "",
     firstName: "",
@@ -29,7 +29,7 @@ function SignUpForm({ onSubmit }) {
     onSubmit({
       firstName: userData.firstName,
       lastName: userData.lastName,
-      email: userData.email,
+      username: userData.username,
       password: userData.password,
     });
   };
@@ -72,16 +72,16 @@ function SignUpForm({ onSubmit }) {
       </div>
       <div className="flex flex-col mt-4">
         <label
-          htmlFor="email"
+          htmlFor="username"
           className="block text-sm font-medium text-gray-700"
         >
-          Email
+          Username
         </label>
         <input
-          type="email"
-          id="email"
-          name="email"
-          value={userData.email}
+          type="username"
+          id="username"
+          name="username"
+          value={userData.username}
           onChange={handleChange}
           required
           className="flex-grow h-8 px-2 border rounded border-grey-400"
