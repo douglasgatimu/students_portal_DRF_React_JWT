@@ -1,14 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../context/DRFAuthContext";
 
 const DashboardHeader = () => {
-  const { session, signOut } = UserAuth();
+  const { isAuthenticated, logoutUser } = UserAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async (e) => {
     e.preventDefault();
     try {
-      await signOut();
+      await logoutUser();
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -23,7 +23,7 @@ const DashboardHeader = () => {
         </Link>
         <nav>
           <ul className="flex space-x-6">
-            {!session ? (
+            {!isAuthenticated ? (
               <>
                 <li>
                   <Link to="/signin" className="hover:underline">
