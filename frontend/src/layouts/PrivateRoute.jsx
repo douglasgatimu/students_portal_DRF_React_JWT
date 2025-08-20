@@ -1,16 +1,18 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
+import { UserAuth } from "../context/DRFAuthContext";
 
 const PrivateRoute = () => {
-  const { session, loading } = UserAuth();
+  const { isAuthenticated, loading } = UserAuth();
 
   if (loading) {
     return (
-      <div style={{ textAlign: "center", padding: "2rem" }}>Loading...</div>
+      <div className="flex items-center justify-center p-8 text-lg font-medium text-gray-600">
+        Loading...
+      </div>
     );
   }
 
-  return session ? <Outlet /> : <Navigate to="/signin" replace />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/signin" replace />;
 };
 
 export default PrivateRoute;
