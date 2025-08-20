@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../context/DRFAuthContext";
 
 const DashboardSidebar = () => {
   const location = useLocation();
-  const { session } = UserAuth();
+  const { isAuthenticated, user } = UserAuth();
 
   const isActive = (path) => {
     return location.pathname === path
@@ -11,13 +11,13 @@ const DashboardSidebar = () => {
       : "text-gray-700";
   };
 
-  if (!session) return null;
+  if (!isAuthenticated) return null;
 
   return (
     <div className="w-64 bg-white shadow-md h-full fixed">
       <div className="p-4 border-b border-[#e4cce0]">
         <h2 className="text-xl font-semibold text-[#640146]">Dashboard</h2>
-        <p className="text-sm text-gray-500">{session.user?.name}</p>
+        <p className="text-sm text-gray-500">{user?.name}</p>
       </div>
       <nav className="p-4">
         <ul className="space-y-2">

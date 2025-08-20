@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../context/DRFAuthContext";
 
 const DashboardOverview = () => {
-  const { session } = UserAuth();
+  const { isAuthenticated, user } = UserAuth();
 
-  const user = session?.user;
-  const userMetadata = user?.user_metadata || {};
+  
+  const userMetadata = user || {};
 
   const firstName = userMetadata.firstName || "Student";
 

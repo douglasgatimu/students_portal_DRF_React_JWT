@@ -1,17 +1,17 @@
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../context/DRFAuthContext";
 import DashboardSidebar from "../../components/dashboard/DashboardSidebar";
 import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
-  const { session } = UserAuth();
+  const { user } = UserAuth();
   const navigate = useNavigate();
 
   const handleChangePasswordClick = () => {
     navigate("/reset-password");
   };
 
-  const user = session?.user;
-  const userMetadata = user?.user_metadata || {};
+  
+  const userMetadata = user || {};
 
   const fullName =
     userMetadata.fullName ||
@@ -19,7 +19,7 @@ const ProfilePage = () => {
       ? `${userMetadata.firstName} ${userMetadata.lastName}`
       : "User");
 
-  const memberSince = user?.created_at
+  const memberSince = user?.date_joined
     ? new Date(user.created_at).toLocaleDateString(undefined, {
         year: "numeric",
         month: "long",
@@ -41,7 +41,7 @@ const ProfilePage = () => {
               <h2 className="text-xl font-semibold text-[#640146]">
                 {fullName}
               </h2>
-              <p className="text-gray-600">{user?.email}</p>
+              <p className="text-gray-600">{user?.username}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

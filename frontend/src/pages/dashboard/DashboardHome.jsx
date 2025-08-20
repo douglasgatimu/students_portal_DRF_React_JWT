@@ -1,9 +1,9 @@
 import DashboardSidebar from "../../components/dashboard/DashboardSidebar";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../context/DRFAuthContext";
 import DashboardOverview from "./DashboardOverview";
 
 const DashboardHome = () => {
-  const { session } = UserAuth();
+  const { isAuthenticated } = UserAuth();
 
   return (
     <div className="flex">
