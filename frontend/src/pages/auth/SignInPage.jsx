@@ -5,21 +5,24 @@ import SignInForm from "../../components/auth/SignInForm";
 import { Link } from "react-router-dom";
 import Spinner from "../../components/common/Spinner";
 
-
 function SignInPage() {
   const [signinError, setSigninError] = useState("");
-  // const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState("");
+  const navigate = useNavigate();
+  const { loginUser } = UserAuth();
 
-  const { loading, loginUser } = UserAuth();
-  
+  const handleSignIn = async (username, password) => {
+    setLoading(true);
+    try {
+      await loginUser(username, password);
 
-const handleSignIn = (username, password) => {
-  try {
-    loginUser(username, password)
-  } catch {
-    setSigninError("Sign in Failed!")
-  }
-};
+      navigate("/dashboard");
+    } catch {
+      setSigninError("Sign in Failed!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="split-container animated-container">
@@ -45,7 +48,7 @@ const handleSignIn = (username, password) => {
                 >
                   Don't have an Account? Register.
                 </Link>
-              </div>              
+              </div>
               <div className="text-center mt-4">
                 <Link
                   className="no-underline hover:underline text-blue-dark text-xs"

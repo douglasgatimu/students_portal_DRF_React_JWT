@@ -5,32 +5,32 @@ import SignUpForm from "../../components/auth/SignUpForm";
 import { Link } from "react-router-dom";
 import Spinner from "../../components/common/Spinner";
 
-
 function SignUpPage() {
   const [error, setError] = useState("");
-  
+  const [loading, setLoading] = useState("");
 
-  const { loading, registerUser } = UserAuth();
+  const { registerUser } = UserAuth();
   const navigate = useNavigate();
 
-const handleSignUp = async (userData) => {
-  const result = await registerUser(
-    userData.username,
-    userData.password,
-    userData.firstName,
-    userData.lastName
-  );
+  const handleSignUp = async (userData) => {
+    setLoading(true);
+    const result = await registerUser(
+      userData.username,
+      userData.password,
+      userData.firstName,
+      userData.lastName,
+    );
 
-  if (result.success) {
-    
-    // toast.success("Successfully registered!");
-    navigate("/dashboard");
-  } else {
-    // toast.error(result.error);
-    setError(result.error)
-  }
-};
-
+    if (result.success) {
+      // toast.success("Successfully registered!");
+      setLoading(false);
+      navigate("/dashboard");
+    } else {
+      // toast.error(result.error);
+      setError(result.error);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="split-container animated-container">

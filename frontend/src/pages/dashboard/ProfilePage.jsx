@@ -10,7 +10,6 @@ const ProfilePage = () => {
     navigate("/reset-password");
   };
 
-  
   const userMetadata = user || {};
 
   const fullName =

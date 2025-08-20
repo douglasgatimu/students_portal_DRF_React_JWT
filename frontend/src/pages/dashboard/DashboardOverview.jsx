@@ -4,7 +4,6 @@ import { UserAuth } from "../../context/DRFAuthContext";
 const DashboardOverview = () => {
   const { isAuthenticated, user } = UserAuth();
 
-  
   const userMetadata = user || {};
 
   const firstName = userMetadata.firstName || "Student";

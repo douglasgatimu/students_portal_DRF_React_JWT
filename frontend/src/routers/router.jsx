@@ -1,19 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 import SignUpPage from "../pages/auth/SignUpPage";
 import SignInPage from "../pages/auth/SignInPage";
-import App from "../App";
 import ResetPassword from "../pages/auth/ResetPassword";
 import PrivateRoute from "../layouts/PrivateRoute";
 import MainLayout from "../layouts/MainLayout";
 import SplitScreen from "../pages/marketing/SplitScreen";
 import ContactPage from "../pages/marketing/ContactPage";
 import About from "../pages/marketing/About";
-import HomePage from "../pages/dashboard/DashboardOverview";
 import DashboardHome from "../pages/dashboard/DashboardHome";
 import CoursesPage from "../pages/dashboard/CoursesPage";
 import LessonsPage from "../pages/dashboard/LessonsPage";
 import ProfilePage from "../pages/dashboard/ProfilePage";
 import DashboardLayout from "../components/dashboard/DashboardLayout";
+import TestAuth from "../tests/TestAuth";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/testauth",
+        element: <TestAuth />,
       },
       { path: "/signup", element: <SignUpPage /> },
       { path: "/signin", element: <SignInPage /> },
@@ -57,7 +60,6 @@ export const router = createBrowserRouter([
                 path: "profile",
                 element: <ProfilePage />,
               },
-
             ],
           },
         ],

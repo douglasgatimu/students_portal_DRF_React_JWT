@@ -14,8 +14,8 @@ const TestAuth = () => {
       {loading
         ? "Loading..."
         : isAuthenticated
-        ? `Ready to log in? ${isAuthenticated}`
-        : "No user logged in"}
+          ? `Ready to log in? ${isAuthenticated}`
+          : "No user logged in"}
     </div>
   );
 };
