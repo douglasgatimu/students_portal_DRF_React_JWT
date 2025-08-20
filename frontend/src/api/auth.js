@@ -43,13 +43,10 @@ export const logout = async () => {
 };
 
 export const authenticationStatus = async () => {
-  try {
-    await axios.post(IS_AUTH_URL, {}, { withCredentials: true });
-    return true;
-  } catch (error) {
-    return false;
+  
+    const response = await axios.get(IS_AUTH_URL, {}, { withCredentials: true });
+    return response.data
   }
-};
 
 
 export const register = async (username, password, firstName, lastName) => {
