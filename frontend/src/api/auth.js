@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IS_AUTH_URL, LOGIN_URL } from "./endpoints";
+import { IS_AUTH_URL, LOGIN_URL, REGISTER_URL } from "./endpoints";
 import { REFRESH_URL } from "./endpoints";
 import { LOGOUT_URL } from "./endpoints";
 
@@ -49,4 +49,14 @@ export const authenticationStatus = async () => {
   } catch (error) {
     return false;
   }
+};
+
+
+export const register = async (username, password, firstName, lastName) => {
+  const response = await axios.post(
+    REGISTER_URL,
+    { username, password, firstName, lastName },
+    { withCredentials: true }
+  );
+  return response.data; 
 };
