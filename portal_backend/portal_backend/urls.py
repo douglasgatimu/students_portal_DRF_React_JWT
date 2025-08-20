@@ -18,8 +18,11 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from courses import views
-from accounts.views import UserViewSet
-
+from accounts.views import UserViewSet, CustomTokenObtainPairView, CustomRefreshTokenView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 
 
@@ -40,5 +43,7 @@ router.register(r'users', UserViewSet, basename='user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),    
+    path('', include(router.urls)),
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', CustomRefreshTokenView.as_view(), name='token_refresh'),
 ]
