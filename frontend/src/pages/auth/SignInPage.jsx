@@ -14,7 +14,11 @@ function SignInPage() {
   
 
 const handleSignIn = (username, password) => {
-  loginUser(username, password)
+  try {
+    loginUser(username, password)
+  } catch {
+    setSigninError("Sign in Failed!")
+  }
 };
 
   return (

@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../context/DRFAuthContext";
 
 function ResetPassword() {
-  const { session } = UserAuth();
+  const { isAuthenticated } = UserAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (session) {
+      if (isAuthenticated) {
         navigate("/dashboard");
       } else {
         navigate("/");
@@ -16,7 +16,7 @@ function ResetPassword() {
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, [session, navigate]);
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center px-4">
@@ -25,7 +25,7 @@ function ResetPassword() {
         This feature is not yet available. Please contact the administrator.
       </p>
       <p className="text-sm text-gray-600">
-        Redirecting you {session ? "to your dashboard" : "home"}...
+        Redirecting you {isAuthenticated ? "to your dashboard" : "home"}...
       </p>
     </div>
   );
