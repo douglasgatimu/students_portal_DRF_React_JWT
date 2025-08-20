@@ -1,38 +1,36 @@
 import { useState } from "react";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../context/DRFAuthContext";
 import { useNavigate } from "react-router-dom";
 import SignUpForm from "../../components/auth/SignUpForm";
 import { Link } from "react-router-dom";
 import Spinner from "../../components/common/Spinner";
 
+
 function SignUpPage() {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState("");
+  
 
-  const { session, signUpNewUser } = UserAuth();
+  const { loading, registerUser } = UserAuth();
   const navigate = useNavigate();
 
-  const handleSignUp = async (userData) => {
-    setLoading(true);
-    try {
-      const result = await signUpNewUser(
-        userData.email,
-        userData.password,
-        userData.firstName,
-        userData.lastName,
-      );
-      if (result.success) {
-        navigate("/dashboard");
-      } else {
-        setError(result.error.message || "Authentication error occurred");
-        console.log(result);
-      }
-    } catch (err) {
-      setError("An error occurred");
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleSignUp = async (userData) => {
+  const result = await registerUser(
+    userData.username,
+    userData.password,
+    userData.firstName,
+    userData.lastName
+  );
+
+  if (result.success) {
+    
+    // toast.success("Successfully registered!");
+    navigate("/dashboard");
+  } else {
+    // toast.error(result.error);
+    setError(result.error)
+  }
+};
+
 
   return (
     <div className="split-container animated-container">

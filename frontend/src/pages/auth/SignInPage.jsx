@@ -13,7 +13,7 @@ function SignInPage() {
   const { loading, loginUser } = UserAuth();
   
 
-const handleSignIn = ({username, password}) => {
+const handleSignIn = (username, password) => {
   loginUser(username, password)
 };
 
@@ -34,6 +34,14 @@ const handleSignIn = ({username, password}) => {
                   {signinError}
                 </div>
               )}
+              <div className="text-center mt-4">
+                <Link
+                  className="no-underline hover:underline text-blue-dark text-xm"
+                  to="/signin"
+                >
+                  Don't have an Account? Register.
+                </Link>
+              </div>              
               <div className="text-center mt-4">
                 <Link
                   className="no-underline hover:underline text-blue-dark text-xs"
