@@ -5,7 +5,7 @@ import { authenticationStatus, login, register, logout } from "../api/auth";
 
 const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
+export const AuthContextProvider = ({ children }) => {
   location = useLocation();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -68,4 +68,7 @@ const registerUser = async (username, password, firstName, lastName) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+
+export const UserAuth = () => {
+  return useContext(AuthContext);
+};
