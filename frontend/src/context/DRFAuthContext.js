@@ -10,14 +10,17 @@ const AuthProvider = ({ children }) => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null)
   const navigator = useNavigate();
 
-  const get_autenticated = async () => {
+  const getAuthenticated = async () => {
     try {
-      const success = await authenticationStatus();
-      setIsAuthenticated(success);
+      const userData = await authenticationStatus();
+      setIsAuthenticated(true);
+      setUser(userData)
     } catch {
       setIsAuthenticated(false);
+      setUser(null)
     } finally {
       setLoading(false);
     }
@@ -26,7 +29,7 @@ const AuthProvider = ({ children }) => {
 const loginUser = async (username, password) => {
   const success = await login(username, password)
   if (success) {
-    setIsAuthenticated(true)
+    await getAuthenticated()
     navigator('/dashboard')
   }
 }
@@ -35,7 +38,8 @@ const logoutUser = async () => {
   const success = await logout()
   if (success) {
     setIsAuthenticated(false)
-    navigator('/')
+    setUser(null)
+    
   }
 }
 
@@ -54,11 +58,11 @@ const registerUser = async (username, password, firstName, lastName) => {
 
 
   useEffect(() => {
-    get_autenticated();
+    getAuthenticated();
   }, [location.pathname]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, loading, loginUser, registerUser, logoutUser }}>
+    <AuthContext.Provider value={{ isAuthenticated, loading, loginUser, registerUser, logoutUser, user }}>
       {children}
     </AuthContext.Provider>
   );
