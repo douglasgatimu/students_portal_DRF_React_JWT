@@ -32,10 +32,10 @@ const CourseList = () => {
           className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
         >
           <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
-          <p className="text-gray-600 mb-4">{course.description}</p>
+          <p className="text-gray-600 mb-4">{course.short_description}</p>
           <div className="flex justify-between text-sm text-gray-500">
-            <span>Instructor: {course.instructor}</span>
-            <span>{course.duration}</span>
+            <span>Instructor_ID: TM00{course.owner}</span>
+            <span>{course.module}</span>
           </div>
           <div className="mt-4">
             <span className="text-blue-600 font-medium">
