@@ -12,7 +12,7 @@ from courses.models import (
     ModuleEnrollment,
     CourseEnrollment,
 )
-from courses.serializers import CourseSerializer, ModuleSerializer
+from courses.serializers import CourseListSerializer, CourseDetailSerializer, ModuleSerializer
 from courses.permissions import (
     IsEnrolledInCourseForDetail,
     IsEnrolledInModuleForDetail,
@@ -21,8 +21,13 @@ from courses.permissions import (
 
 class CourseViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    permission_classes = [IsEnrolledInCourseForDetail] 
+    
+    permission_classes = [IsEnrolledInCourseForDetail]
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CourseListSerializer
+        return CourseDetailSerializer
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def enroll(self, request, pk=None):

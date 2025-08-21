@@ -2,7 +2,7 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 from courses.models import Course, Module
 
-class CourseSerializer(serializers.ModelSerializer):
+class CourseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = [
@@ -16,11 +16,29 @@ class CourseSerializer(serializers.ModelSerializer):
                   'requirements',
                   ]
 
+class CourseDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = [
+            "title",
+            "owner",
+            "module",
+            "slug",
+            "short_description",
+            "description",
+            "outcome",
+            "requirements",
+            "language",
+            "level",
+            "banner",
+            "created_at",
+            "updated_at",
+        ]
 
 class ModuleSerializer(serializers.ModelSerializer):
 
     # courses = serializers.StringRelatedField(many=True, read_only=True)
-    courses = CourseSerializer(many=True, read_only=True)
+    courses = CourseListSerializer(many=True, read_only=True)
     total_courses = serializers.IntegerField()
     class Meta:
         model = Module

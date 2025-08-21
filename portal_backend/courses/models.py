@@ -62,7 +62,7 @@ class ModuleEnrollment(models.Model):
         unique_together = ('student', 'module')
 
     def __str__(self):
-        return f"{self.student.username} in module {self.module.name}"
+        return f"{self.student.username} in module {self.module.title}"
 
 
 class CourseEnrollment(models.Model):
