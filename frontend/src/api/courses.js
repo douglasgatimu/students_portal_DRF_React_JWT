@@ -8,7 +8,7 @@ export const getCourses = async () => {
     return response.data;
   } catch (error) {
     return callRefresh(error, () =>
-      axios.get(COURSES_URL, { withCredentials: true })
+      axios.get(COURSES_URL, { withCredentials: true }),
     );
   }
 };
@@ -21,7 +21,7 @@ export const getCourseBySlug = async (slug) => {
     return response.data;
   } catch (error) {
     return callRefresh(error, () =>
-      axios.get(`${COURSES_URL}${slug}/`, { withCredentials: true })
+      axios.get(`${COURSES_URL}${slug}/`, { withCredentials: true }),
     );
   }
 };
@@ -30,17 +30,17 @@ export const enrollCourse = async (slug) => {
   try {
     const response = await axios.post(
       `${COURSES_URL}${slug}/enroll/`,
-      {}, 
-      { withCredentials: true }
+      {},
+      { withCredentials: true },
     );
     return response.data;
   } catch (error) {
     return callRefresh(error, () =>
       axios.post(
         `${COURSES_URL}${slug}/enroll/`,
-        {}, 
-        { withCredentials: true }
-      )
+        {},
+        { withCredentials: true },
+      ),
     );
   }
 };

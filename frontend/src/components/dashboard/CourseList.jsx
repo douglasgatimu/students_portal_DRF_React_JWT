@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { getCourses } from "../../api/courses";
+import { getCourses, enrollCourse } from "../../api/courses";
+import CourseCard from "./CourseCard";
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
@@ -20,6 +21,16 @@ const CourseList = () => {
     fetchCourses();
   }, []);
 
+  const handleEnroll = async (slug) => {
+    try {
+      const result = await enrollCourse(slug);
+
+      alert(`${result.detail}: ${slug}`);
+    } catch (error) {
+      alert(`${error.message}`);
+    }
+  };
+
   if (loading) {
     return <div className="text-center py-4">Loading courses...</div>;
   }
@@ -27,22 +38,7 @@ const CourseList = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {courses.map((course) => (
-        <div
-          key={course.title}
-          className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
-        >
-          <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
-          <p className="text-gray-600 mb-4">{course.short_description}</p>
-          <div className="flex justify-between text-sm text-gray-500">
-            <span>Instructor_ID: TM00{course.owner}</span>
-            <span>{course.module}</span>
-          </div>
-          <div className="mt-4">
-            <span className="text-blue-600 font-medium">
-              {course.studentsEnrolled} students
-            </span>
-          </div>
-        </div>
+        <CourseCard key={course.slug} course={course} onEnroll={handleEnroll} />
       ))}
     </div>
   );

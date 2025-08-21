@@ -13,14 +13,9 @@ export const login = async (username, password) => {
   return response.data.success;
 };
 
-
 export const refreshToken = async () => {
   try {
-    await axios.post(
-      REFRESH_URL,
-      {},
-      { withCredentials: true }
-    );
+    await axios.post(REFRESH_URL, {}, { withCredentials: true });
     return true;
   } catch (error) {
     console.error("Token refresh failed:", {
@@ -34,7 +29,6 @@ export const refreshToken = async () => {
 
 export const callRefresh = async (error, func) => {
   if (error.response && error.response.status === 401) {
-
     const tokenRefreshed = await refreshToken();
 
     if (tokenRefreshed) {
@@ -42,13 +36,14 @@ export const callRefresh = async (error, func) => {
       return retryResponse.data;
     } else {
       console.error("Token refresh failed. User re-authenticate.");
-      throw new Error("Authentication failed: refresh token invalid or expired");
+      throw new Error(
+        "Authentication failed: refresh token invalid or expired",
+      );
     }
   }
 
   throw error;
 };
-
 
 export const logout = async () => {
   try {

@@ -17,8 +17,7 @@ export const AuthContextProvider = ({ children }) => {
       setUser(response.data);
       setIsAuthenticated(true);
     } catch (error) {
-      const retried = await callRefresh(
-        error,
+      const retried = await callRefresh(error, () =>
         axios.get(IS_AUTH_URL, { withCredentials: true }),
       );
       if (retried) {
@@ -26,6 +25,7 @@ export const AuthContextProvider = ({ children }) => {
         setIsAuthenticated(true);
       } else {
         setUser(null);
+        // console.log('refresh failure@getAuthenticated')
         setIsAuthenticated(false);
       }
     } finally {
