@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DashboardSidebar from "../../components/dashboard/DashboardSidebar";
 import { getCourseBySlug, enrollCourse } from "../../api/courses";
+import { Link } from "react-router-dom";
 
 const CoursePage = () => {
   const { slug } = useParams();
@@ -108,19 +109,43 @@ const CoursePage = () => {
         </div>
 
         
-        <div className="bg-purple-600 text-white p-6 rounded-2xl shadow text-center">
-          <h2 className="text-2xl font-bold mb-2">Ready to start learning?</h2>
-          <p className="mb-4">
-            Join <span className="font-semibold">{course.title}</span> today and
-            unlock your potential.
-          </p>
-          <button
-          className="bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl shadow hover:bg-purple-100 transition"
-          onClick={() => handleEnroll(course.slug)}
-          >
-            Enroll Now
-          </button>
-        </div>
+<div className="bg-purple-600 text-white p-6 rounded-2xl shadow text-center">
+  <h2 className="text-2xl font-bold mb-2">
+    {course.is_enrolled ? "Welcome back!" : "Ready to start learning?"}
+  </h2>
+
+  <p className="mb-4">
+    {course.is_enrolled ? (
+      <>
+        Continue your journey in{" "}
+        <span className="font-semibold">{course.title}</span>.
+      </>
+    ) : (
+      <>
+        Join <span className="font-semibold">{course.title}</span> today and
+        unlock your potential.
+      </>
+    )}
+  </p>
+
+  {course.is_enrolled ? (
+    <Link
+    to='/dashboard/lessons'
+      className="bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl shadow hover:bg-purple-100 transition"
+    
+    >
+      Resume Course
+    </Link>
+  ) : (
+    <button
+      className="bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl shadow hover:bg-purple-100 transition"
+      onClick={() => handleEnroll(course.slug)}   
+    >
+      Enroll Now
+    </button>
+  )}
+</div>
+
       </div>
     </div>
   );
