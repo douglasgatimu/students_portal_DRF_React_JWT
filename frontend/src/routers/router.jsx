@@ -13,6 +13,7 @@ import LessonsPage from "../pages/dashboard/LessonsPage";
 import ProfilePage from "../pages/dashboard/ProfilePage";
 import DashboardLayout from "../components/dashboard/DashboardLayout";
 import TestAuth from "../tests/TestAuth";
+import CoursePage from "../pages/dashboard/CoursePage";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
                 path: "courses",
                 element: <CoursesPage />,
               },
+              {
+                path: "courses/:slug", 
+                element: <CoursePage />,
+              },              
               {
                 path: "lessons",
                 element: <LessonsPage />,

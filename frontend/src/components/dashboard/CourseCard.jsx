@@ -1,4 +1,6 @@
-const CourseCard = ({ course, onEnroll }) => {
+import { Link } from "react-router-dom";
+
+const CourseCard = ({ course }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
       <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
@@ -12,16 +14,17 @@ const CourseCard = ({ course, onEnroll }) => {
           {course.studentsEnrolled} students
         </span>
       </div>
+
       <div className="flex flex-col mt-8 transition-all duration-300 ease-in-out">
-        <button
-          type="button"
+        <Link
+          
           style={{ backgroundColor: "#640146" }}
-          className="hover:bg-purple-700 text-white text-sm font-semibold py-2 px-4 rounded"
-          onClick={() => onEnroll(course.slug)}
+          className="hover:bg-purple-700 text-white text-sm font-semibold py-2 px-4 rounded text-center"
+          to={`/dashboard/courses/${course.slug}`}
         >
-          Enroll
-        </button>
-      </div>
+          View Details
+        </Link>
+      </div>      
     </div>
   );
 };
