@@ -44,7 +44,7 @@ function SignInPage() {
               <div className="text-center mt-4">
                 <Link
                   className="no-underline hover:underline text-blue-dark text-xm"
-                  to="/signin"
+                  to="/signup"
                 >
                   Don't have an Account? Register.
                 </Link>

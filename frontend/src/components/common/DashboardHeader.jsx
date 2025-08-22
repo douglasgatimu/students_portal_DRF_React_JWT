@@ -54,10 +54,7 @@ const DashboardHeader = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="/dashboard/announcements"
-                    className="hover:underline"
-                  >
+                  <Link to="/dashboard/#" className="hover:underline">
                     Announcements
                   </Link>
                 </li>
