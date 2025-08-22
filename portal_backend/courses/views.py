@@ -22,7 +22,7 @@ from courses.permissions import (
 class CourseViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Course.objects.all()
     
-    permission_classes = [IsEnrolledInCourseForDetail]
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -33,21 +33,15 @@ class CourseViewSet(viewsets.ReadOnlyModelViewSet):
     def enroll(self, request, pk=None):
         """
         Enroll the requesting user in the course.
-        Only allowed if user is already enrolled in the related module.
+        Auto-enrolls user in the related module if not already enrolled.
         """
         course = self.get_object()
         user = request.user
 
-        try:
-            module_enrollment = ModuleEnrollment.objects.get(
-                student=user,
-                module=course.module
-            )
-        except ModuleEnrollment.DoesNotExist:
-            return Response(
-                {"detail": "Must be enrolled in module before enrolling in its course."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        module_enrollment, _ = ModuleEnrollment.objects.get_or_create(
+            student=user,
+            module=course.module
+        )
 
         ce, created = CourseEnrollment.objects.get_or_create(
             phase_enrollment=module_enrollment,
@@ -55,7 +49,7 @@ class CourseViewSet(viewsets.ReadOnlyModelViewSet):
         )
         if created:
             return Response(
-                {"detail": "Enrolled in course."},
+                {"detail": "Enrolled in course (and module if not already)."},
                 status=status.HTTP_201_CREATED
             )
         else:
@@ -64,34 +58,50 @@ class CourseViewSet(viewsets.ReadOnlyModelViewSet):
                 status=status.HTTP_200_OK
             )
 
+
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def unenroll(self, request, pk=None):
         """
         Unenroll the requesting user from the course.
+        Auto-unenrolls from the module if no other courses remain in it.
         """
         course = self.get_object()
         user = request.user
 
-        ce_qs = CourseEnrollment.objects.filter(
-            course=course,
-            phase_enrollment__student=user
-        )
-        if not ce_qs.exists():
+        try:
+            ce = CourseEnrollment.objects.get(
+                course=course,
+                phase_enrollment__student=user
+            )
+        except CourseEnrollment.DoesNotExist:
             return Response(
                 {"detail": "Not enrolled in course."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        ce_qs.delete()
+
+        module_enrollment = ce.phase_enrollment
+
+        with transaction.atomic():
+            ce.delete()
+
+            if not CourseEnrollment.objects.filter(phase_enrollment=module_enrollment).exists():
+                module_enrollment.delete()
+                return Response(
+                    {"detail": "Unenrolled from course and module."},
+                    status=status.HTTP_200_OK
+                )
+
         return Response(
             {"detail": "Unenrolled from course."},
             status=status.HTTP_200_OK
         )
 
 
+
 class ModuleViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Module.objects.all().annotate(total_courses=Count('courses'))
     serializer_class = ModuleSerializer
-    permission_classes = [IsEnrolledInModuleForDetail] 
+    permission_classes = [IsAuthenticated] 
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def enroll(self, request, pk=None):
@@ -114,20 +124,25 @@ class ModuleViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def unenroll(self, request, pk=None):
+        """
+        Unenroll the requesting user from the module.
+        Also unenrolls from all related courses.
+        Safe to call even if already unenrolled.
+        """
         module = self.get_object()
         user = request.user
 
         try:
             me = ModuleEnrollment.objects.get(student=user, module=module)
         except ModuleEnrollment.DoesNotExist:
+            
             return Response(
-                {"detail": "Not enrolled in module."},
-                status=status.HTTP_400_BAD_REQUEST
+                {"detail": "Already not enrolled in module."},
+                status=status.HTTP_200_OK
             )
 
-        # Unenroll from module and cascade course unenrollments tied to this ModuleEnrollment
         with transaction.atomic():
-            # Delete course enrollments associated with this module enrollment
+            
             CourseEnrollment.objects.filter(phase_enrollment=me).delete()
             me.delete()
 
@@ -135,3 +150,4 @@ class ModuleViewSet(viewsets.ReadOnlyModelViewSet):
             {"detail": "Unenrolled from module and related courses."},
             status=status.HTTP_200_OK
         )
+

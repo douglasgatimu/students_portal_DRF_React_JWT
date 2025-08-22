@@ -1,9 +1,13 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
-from courses.models import Course, Module
+from courses.models import Course, Module, CourseEnrollment
+
 
 class CourseListSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source="owner.username")
+    is_enrolled = serializers.SerializerMethodField()
+    student_count = serializers.SerializerMethodField()
+    module = serializers.ReadOnlyField(source="module.title")
     
     class Meta:
         model = Course
@@ -16,10 +20,26 @@ class CourseListSerializer(serializers.ModelSerializer):
                   'language',
                   'created_at',
                   'requirements',
+                  'is_enrolled',
+                  'student_count'
                   ]
+    def get_is_enrolled(self, obj):
+        user = self.context["request"].user
+        if user.is_anonymous:
+            return False
+        return CourseEnrollment.objects.filter(
+            course=obj,
+            phase_enrollment__student=user
+        ).exists()    
+
+    def get_student_count(self, obj):
+        return CourseEnrollment.objects.filter(course=obj).count()        
 
 class CourseDetailSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source="owner.username")
+    is_enrolled = serializers.SerializerMethodField()
+    module = serializers.ReadOnlyField(source="module.title")
+
 
     class Meta:
         model = Course
@@ -37,7 +57,16 @@ class CourseDetailSerializer(serializers.ModelSerializer):
             "banner",
             "created_at",
             "updated_at",
+            'is_enrolled'
         ]
+    def get_is_enrolled(self, obj):
+        user = self.context["request"].user
+        if user.is_anonymous:
+            return False
+        return CourseEnrollment.objects.filter(
+            course=obj,
+            phase_enrollment__student=user
+        ).exists()         
 
 class ModuleSerializer(serializers.ModelSerializer):
 
