@@ -3,6 +3,8 @@ from rest_framework import serializers
 from courses.models import Course, Module
 
 class CourseListSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source="owner.username")
+    
     class Meta:
         model = Course
         fields = [
@@ -17,6 +19,8 @@ class CourseListSerializer(serializers.ModelSerializer):
                   ]
 
 class CourseDetailSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source="owner.username")
+
     class Meta:
         model = Course
         fields = [
