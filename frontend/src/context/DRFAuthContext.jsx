@@ -25,7 +25,6 @@ export const AuthContextProvider = ({ children }) => {
         setIsAuthenticated(true);
       } else {
         setUser(null);
-        // console.log('refresh failure@getAuthenticated')
         setIsAuthenticated(false);
       }
     } finally {
@@ -34,11 +33,13 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const loginUser = async (username, password) => {
-    const success = await login(username, password);
-    // console.log(success)
-    if (success) {
+    
+    const result = await login(username, password);
+
+    if (result.success) {
       await getAuthenticated();
     }
+  
   };
 
   const logoutUser = async () => {
@@ -50,16 +51,28 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const registerUser = async (username, password, firstName, lastName) => {
-    try {
-      const data = await register(username, password, firstName, lastName);
-      return { success: true, data };
-    } catch (error) {
+  try {
+    const data = await register(username, password, firstName, lastName);
+    console.log('post-reg-return-data: ', data)
+    return { success: true, data };
+  } catch (error) {
+    console.error("Registration error:", error);
+
+    if (error.type === "validation") {
       return {
         success: false,
-        error: error.response?.data?.message || "Registration failed",
+        errorType: "validation",
+        errors: error.errors,
       };
     }
-  };
+
+    return {
+      success: false,
+      errorType: "network",
+      errors: { general: [error.message || "An unexpected error occurred."] },
+    };
+  }
+};
 
   useEffect(() => {
     getAuthenticated();

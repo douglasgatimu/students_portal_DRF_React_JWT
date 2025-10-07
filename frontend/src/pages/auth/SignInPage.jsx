@@ -17,8 +17,8 @@ function SignInPage() {
       await loginUser(username, password);
 
       navigate("/dashboard");
-    } catch {
-      setSigninError("Sign in Failed!");
+    } catch (error) {
+      setSigninError(error.message);
     } finally {
       setLoading(false);
     }

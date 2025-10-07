@@ -56,7 +56,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.error)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -89,8 +89,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             )            
             return res
 
-        except:
-            return Response({'success': False})
+        except Exception as e:
+            return Response({'success': False, 'errors': f"{str(e)}"})
 
 class CustomRefreshTokenView(TokenRefreshView):
     def post(self, request, *args, **kwargs):

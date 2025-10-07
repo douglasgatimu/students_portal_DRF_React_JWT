@@ -13,6 +13,7 @@ function SignUpPage() {
   const navigate = useNavigate();
 
   const handleSignUp = async (userData) => {
+    console.log("userData: ",userData)
     setLoading(true);
     const result = await registerUser(
       userData.username,
@@ -20,15 +21,16 @@ function SignUpPage() {
       userData.firstName,
       userData.lastName,
     );
-
+    setLoading(false);
+    console.log('result_error_check: ', result)
     if (result.success) {
       // toast.success("Successfully registered!");
-      setLoading(false);
+      
       navigate("/dashboard");
     } else {
       // toast.error(result.error);
-      setError(result.error);
-      setLoading(false);
+      setError(result.errors);
+      
     }
   };
 
@@ -41,11 +43,13 @@ function SignUpPage() {
               <h2 className="text-2xl font-bold mb-6 text-center text-rose-900">
                 Register
               </h2>
-              {error && (
-                <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
-                  {error}
-                </div>
-              )}
+
+              {Object.entries(error || {}).map(([field, messages]) => (
+  <p key={field} className="mb-4 p-2 bg-red-100 text-red-700 rounded">
+    {field.toUpperCase()}: {messages.join(", ")}
+  </p>
+))}
+
               <SignUpForm onSubmit={handleSignUp} />
               <Spinner loading={loading} />
               <div className="mt-4 text-center">

@@ -10,7 +10,14 @@ export const login = async (username, password) => {
     { username: username, password: password },
     { withCredentials: true },
   );
-  return response.data.success;
+
+    const data = response.data;
+  if (!data.success) {
+    throw new Error(data.errors || "Login failed");
+  }
+  
+  return data;
+
 };
 
 export const refreshToken = async () => {
@@ -61,10 +68,29 @@ export const authenticationStatus = async () => {
 };
 
 export const register = async (username, password, firstName, lastName) => {
-  const response = await axios.post(
-    REGISTER_URL,
-    { username, password, firstName, lastName },
-    { withCredentials: true },
-  );
-  return response.data;
+  try {
+    const response = await axios.post(
+      REGISTER_URL,
+      { username, password, firstName: firstName, lastName: lastName },
+      { withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+       },
+      
+    );
+    console.log('reg_data: ', response.data)
+    return response.data;
+
+  } catch (err) {
+    if (err.response && err.response.data) {
+      throw {
+        type: "validation",
+        errors: err.response.data,
+      };
+    }
+
+    throw {
+      type: "network",
+      message: "Network or server error. Please try again later.",
+    };
+  }
 };
